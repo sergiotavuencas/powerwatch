@@ -3,6 +3,7 @@ package com.tavuencas.sergio.device_service.service;
 import com.tavuencas.sergio.device_service.dto.DeviceRequestDto;
 import com.tavuencas.sergio.device_service.dto.DeviceResponseDto;
 import com.tavuencas.sergio.device_service.entity.Device;
+import com.tavuencas.sergio.device_service.exception.DeviceNotFoundException;
 import com.tavuencas.sergio.device_service.repository.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class DeviceService {
         log.info("Getting device by id: {}", id);
 
         Device device = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Device not found with id " + id));
+                .orElseThrow(() -> new DeviceNotFoundException("Device not found with id " + id));
 
         return toDto(device);
     }
@@ -44,7 +45,7 @@ public class DeviceService {
         log.info("Updating device with id: {}", id, request);
 
         Device device = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Device not found with id " + id));
+                .orElseThrow(() -> new DeviceNotFoundException("Device not found with id " + id));
 
         device.setName(request.name());
         device.setType(request.type());
@@ -60,7 +61,7 @@ public class DeviceService {
         log.info("Deleting device with id: {}", id);
 
         Device device = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Device not found with id " + id));
+                .orElseThrow(() -> new DeviceNotFoundException("Device not found with id " + id));
 
         repository.delete(device);
     }
