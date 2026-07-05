@@ -3,6 +3,7 @@ package com.tavuencas.sergio.user_service.service;
 import com.tavuencas.sergio.user_service.dto.UserRequestDto;
 import com.tavuencas.sergio.user_service.dto.UserResponseDto;
 import com.tavuencas.sergio.user_service.entity.User;
+import com.tavuencas.sergio.user_service.exception.UserNotFoundException;
 import com.tavuencas.sergio.user_service.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,15 +37,17 @@ public class UserService {
     public UserResponseDto getUserById(Long id) {
         log.info("Getting User by ID: {}", id);
 
-        return repository.findById(id)
-                .map(this::toDto)
-                .orElse(null);
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found."));
+
+        return toDto(user);
     }
 
     public void update(Long id, UserRequestDto request) {
         log.info("Updating User with ID: {}", id);
 
-        User user = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found."));
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found."));
 
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
@@ -57,7 +60,7 @@ public class UserService {
     public void delete(Long id) {
         log.info("Deleting User with ID: {}", id);
 
-        User user = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found."));
+        User user = repository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found."));
 
         repository.delete(user);
     }
