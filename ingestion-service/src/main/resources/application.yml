@@ -14,6 +14,7 @@ simulation:
   endpoint: http://localhost:8082/api/v1/ingestion
   requests-per-interval: 1000
   interval-ms: 5000
+  parallel-threads: 10
 
 server:
   port: 8082
