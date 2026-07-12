@@ -13,6 +13,11 @@ spring:
           json:
             type:
               mapping: energyUsageEvent:com.tavuencas.sergio.kafka.event.EnergyUsageEvent
+    template:
+      default-topic: energy-alerts
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 #Influx DB Configuration
 influx:
@@ -20,6 +25,14 @@ influx:
   token: my-token
   org: tavuencas
   bucket: usage-bucket
+
+device:
+  service:
+    url: http://localhost:8081/api/v1/device
+
+user:
+  service:
+    url: http://localhost:8080/api/v1/user
 
 server:
   port: 8083

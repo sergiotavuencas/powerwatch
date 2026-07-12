@@ -1,6 +1,9 @@
-package com.tavuencas.sergio.user_service.dto;
+package com.tavuencas.sergio.usage_service.dto;
 
-public record UserRequestDto(
+import lombok.Builder;
+
+@Builder
+public record UserResponseDto(
         Long id,
         String firstName,
         String lastName,

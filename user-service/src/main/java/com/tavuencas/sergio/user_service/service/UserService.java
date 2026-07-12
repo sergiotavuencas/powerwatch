@@ -53,6 +53,8 @@ public class UserService {
         user.setLastName(request.lastName());
         user.setEmail(request.email());
         user.setAddress(request.address());
+        user.setAlerting(request.alerting());
+        user.setEnergyAlertingThreshold(request.energyAlertingThreshold());
 
         repository.save(user);
     }
@@ -67,10 +69,13 @@ public class UserService {
 
     private UserResponseDto toDto(User user) {
         return new UserResponseDto(
+                user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.getAddress()
+                user.getAddress(),
+                user.isAlerting(),
+                user.getEnergyAlertingThreshold()
         );
     }
 }

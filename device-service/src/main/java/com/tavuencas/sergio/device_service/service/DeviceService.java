@@ -71,7 +71,8 @@ public class DeviceService {
                 device.getId(),
                 device.getName(),
                 device.getType(),
-                device.getLocation()
+                device.getLocation(),
+                device.getUserId()
         );
     }
 }
