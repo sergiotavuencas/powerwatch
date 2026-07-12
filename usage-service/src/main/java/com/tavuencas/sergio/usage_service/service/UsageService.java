@@ -81,6 +81,13 @@ public class UsageService {
                 |> sum(column: "_value")
             """, influxBucket, oneHourAgo.toString(), now);
 
+        List<DeviceEnergy> deviceEnergies = getDeviceEnergies(fluxQuery);
+        Map<Long, List<DeviceEnergy>> userDeviceEnergyMap = mapUserDeviceEnergy(deviceEnergies);
+
+        processUserAlerts(userDeviceEnergyMap);
+    }
+
+    private List<DeviceEnergy> getDeviceEnergies(String fluxQuery) {
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(fluxQuery, influxOrg);
 
@@ -104,6 +111,10 @@ public class UsageService {
 
         log.info("Aggregated device energies over the past hour: {}", deviceEnergies);
 
+        return deviceEnergies;
+    }
+
+    private Map<Long, List<DeviceEnergy>> mapUserDeviceEnergy(List<DeviceEnergy> deviceEnergies) {
         for (DeviceEnergy deviceEnergy : deviceEnergies) {
             final DeviceResponseDto response = deviceClient.getDeviceById(deviceEnergy.getDeviceId());
 
@@ -123,6 +134,10 @@ public class UsageService {
 
         log.info("User-Device Energy Map: {}", userDeviceEnergyMap);
 
+        return userDeviceEnergyMap;
+    }
+
+    private void processUserAlerts(Map<Long, List<DeviceEnergy>> userDeviceEnergyMap) {
         List<Long> userIds = new ArrayList<>(userDeviceEnergyMap.keySet());
         final Map<Long, Double> userThresholdMap = new HashMap<>();
         final Map<Long, String> userEmailMap = new HashMap<>();
@@ -158,7 +173,7 @@ public class UsageService {
 
             if (totalConsumption > threshold) {
                 log.info("ALERT: User Id {} has exceeded the energy threshold! " +
-                        "Total Consumption: {}, Threshold: {}",
+                                "Total Consumption: {}, Threshold: {}",
                         userId, totalConsumption, threshold
                 );
 
@@ -173,11 +188,10 @@ public class UsageService {
                 kafkaTemplate.send("energy-alert", event);
             } else {
                 log.info("User ID {} is within the energy threshold. " +
-                        "Total Consumption: {}, Threshold: {}",
+                                "Total Consumption: {}, Threshold: {}",
                         userId, totalConsumption, threshold
                 );
             }
         }
-
     }
 }
