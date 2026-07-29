@@ -1,19 +1,11 @@
-# POWER WATCH
+### ⚡ PowerWatch — Work in Progress
 
-## Getting Started
+A guided microservices-based project designed to collect, process, and monitor the energy consumption of electronic devices.
 
-### How to Start
-First thing you need to do is run the docker containers.
+The solution uses Apache Kafka for asynchronous communication and combines relational and time-series databases. Planned improvements include an API Gateway and monitoring dashboards with Grafana.
 
-Run the following command in the root directory of the project:
+**Technologies:** Java, Spring Boot, Apache Kafka, Docker, MySQL and InfluxDB.
 
-```
-docker compose -v up -d
-```
+## How to run it
 
-To stop the docker containers do:
-```
-docker compose down
-```
-
-You might have to delete the pre-existing volumes if you are encountering issues with the DB.
+[Tutorial](https://github.com/sergiotavuencas/powerwatch/blob/main/HELP.md)
