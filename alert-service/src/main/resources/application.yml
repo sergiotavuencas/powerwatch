@@ -4,7 +4,7 @@ spring:
 
   # Consumer
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: localhost:9094
     consumer:
       group-id: alert-service
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -17,7 +17,7 @@ spring:
 
   # MySQL Configuration
   datasource:
-    url: jdbc:mysql://localhost:3306/home_energy_tracker
+    url: jdbc:mysql://localhost:3306/power_watch
     username: root
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -36,5 +36,5 @@ spring:
           starttls:
             enable: false
 
-service:
+server:
   port: 8084
