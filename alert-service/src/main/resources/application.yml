@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: alert-service
+
+  # Consumer
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: alert-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: alertingEvent:com.tavuencas.sergio.kafka.event.AlertingEvent
+
+  # MySQL Configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/home_energy_tracker
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  # Mailtip SMTP Configuration
+  mail:
+    host: localhost
+    port: 1025
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+service:
+  port: 8084
