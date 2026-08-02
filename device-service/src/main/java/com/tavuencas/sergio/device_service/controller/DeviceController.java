@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/device")
 public class DeviceController {
@@ -50,5 +52,11 @@ public class DeviceController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<DeviceResponseDto>> getAllDevicesByUserId(@PathVariable Long userId) {
+        List<DeviceResponseDto> devices = service.getAllDevicesByUserId(userId);
+        return ResponseEntity.ok(devices);
     }
 }
