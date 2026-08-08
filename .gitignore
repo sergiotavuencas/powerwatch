@@ -33,6 +33,7 @@ docker/mysql/data/
 # Docker volumes locais
 ############################
 docker_data/
+volume-data/
 
 ############################
 # Sistema Operacional

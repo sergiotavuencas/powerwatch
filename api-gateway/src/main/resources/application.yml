@@ -2,6 +2,12 @@ spring:
   application:
     name: api-gateway
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8091/realms/pw-security-realm
+
 # Actuator
 management:
   health:
@@ -29,5 +35,13 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 2
         automaticTransitionFromOpenToHalfOpenEnabled: true
 
+keycloack:
+  auth:
+    jwt-set-uri: http://localhost:8091/realms/pw-security-realm/protocol/openid-connect/certs
+
 server:
   port: 9000
+
+security:
+  excluded:
+    urls: /actuator/**
