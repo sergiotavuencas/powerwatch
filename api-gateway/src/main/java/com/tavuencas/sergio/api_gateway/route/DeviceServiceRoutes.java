@@ -1,6 +1,7 @@
 package com.tavuencas.sergio.api_gateway.route;
 
 import org.springframework.cloud.gateway.server.mvc.filter.CircuitBreakerFilterFunctions;
+import org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,14 @@ public class DeviceServiceRoutes {
                         request -> ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE)
                                 .body("Device service is down.")
                 )
+                .build();
+    }
+
+    @Bean RouterFunction<ServerResponse> deviceServiceApiDocs() {
+        return GatewayRouterFunctions.route("device-service-api-docs")
+                .route(RequestPredicates.path("/docs/device-service/v3/api-docs"), http())
+                .before(uri("http://localhost:8081"))
+                .filter(FilterFunctions.setPath("/v3/api-docs"))
                 .build();
     }
 }
