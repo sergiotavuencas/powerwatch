@@ -25,8 +25,8 @@ public class UserService {
                 .lastName(request.lastName())
                 .email(request.email())
                 .address(request.address())
-                .alerting(false)
-                .energyAlertingThreshold(0)
+                .alerting(request.alerting())
+                .energyAlertingThreshold(request.energyAlertingThreshold())
                 .build();
 
         User savedUser = repository.save(createdUser);
