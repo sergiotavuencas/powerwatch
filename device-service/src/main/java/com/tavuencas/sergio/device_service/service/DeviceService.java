@@ -8,6 +8,8 @@ import com.tavuencas.sergio.device_service.repository.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class DeviceService {
@@ -64,6 +66,13 @@ public class DeviceService {
                 .orElseThrow(() -> new DeviceNotFoundException("Device not found with id " + id));
 
         repository.delete(device);
+    }
+
+    public List<DeviceResponseDto> getAllDevicesByUserId(Long userId) {
+        List<Device> devices = repository.findDeviceByUserId(userId);
+        return devices.stream()
+                .map(this::toDto)
+                .toList();
     }
 
     private DeviceResponseDto toDto(Device device) {
