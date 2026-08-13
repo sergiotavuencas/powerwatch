@@ -44,4 +44,16 @@ server:
 
 security:
   excluded:
-    urls: /actuator/**
+    urls: /actuator/**, /swagger-ui.html, /swagger-ui/**, /docs/**, /v3/api-docs/**, /swagger-resources/**, /api-docs/**
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls[0]:
+      name: User Service
+      url: /docs/user-service/v3/api-docs
+    urls[1]:
+      name: Device Service
+      url: /docs/device-service/v3/api-docs
+  api-docs:
+    path: /v3/api-docs

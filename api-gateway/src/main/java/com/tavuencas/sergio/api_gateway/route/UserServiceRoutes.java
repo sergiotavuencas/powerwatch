@@ -1,11 +1,11 @@
 package com.tavuencas.sergio.api_gateway.route;
 
 import org.springframework.cloud.gateway.server.mvc.filter.CircuitBreakerFilterFunctions;
+import org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.servlet.function.RequestPredicates;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerResponse;
@@ -36,6 +36,14 @@ public class UserServiceRoutes {
                     request -> ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE)
                             .body("User service is down.")
                 )
+                .build();
+    }
+
+    @Bean RouterFunction<ServerResponse> userServiceApiDocs() {
+        return GatewayRouterFunctions.route("user-service-api-docs")
+                .route(RequestPredicates.path("/docs/user-service/v3/api-docs"), http())
+                .before(uri("http://localhost:8080"))
+                .filter(FilterFunctions.setPath("/v3/api-docs"))
                 .build();
     }
 }
